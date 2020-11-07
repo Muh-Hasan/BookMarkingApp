@@ -17,6 +17,7 @@
     "@apollo/client": "^3.2.5",
     "cross-fetch": "^3.0.6",
     "dotenv": "^8.2.0",
+    "faunadb": "^3.0.1",
     "gatsby": "^2.25.3",
     "graphql-tag": "^2.11.0",
     "react": "^16.12.0",
