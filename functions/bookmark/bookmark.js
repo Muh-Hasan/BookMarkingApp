@@ -11,6 +11,10 @@ const typeDefs = gql`
   type Query {
     bookmarks: [Bookmark!]
   }
+  type Mutation {
+    addBookmark({url : String! , description : String , title : String!}): Bookmark
+    delBookmark(id: ID!): Bookmark
+  }
   type Bookmark {
     id: ID!
     url: String!
@@ -41,6 +45,29 @@ const resolvers = {
       } catch (error) {
         console.log(error)
         return error.toString()
+      }
+    },
+  },
+  Mutation: {
+    addBookmark: async (_, { url ,title , description }) => {
+      try {
+        const result = await client.query(
+          q.Create(q.Collection("bookmarks"), { data: { url: url , title : title , description : description } })
+        )
+        console.log(result.ref.id)
+        return result.data
+      } catch (error) {
+        return error.toString()
+      }
+    },
+    delBookmark: async (_, { id }) => {
+      try {
+        const result = await client.query(
+          q.Delete(q.Ref(q.Collection("bookmarks"), id))
+        )
+        return result.data
+      } catch (error) {
+        return error
       }
     },
   },
