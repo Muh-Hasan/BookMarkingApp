@@ -12,7 +12,7 @@ const typeDefs = gql`
     bookmarks: [Bookmark!]
   }
   type Mutation {
-    addBookmark({url : String! , description : String , title : String!}): Bookmark
+    addBookmark(url : String! , description : String , title : String!): Bookmark
     delBookmark(id: ID!): Bookmark
   }
   type Bookmark {

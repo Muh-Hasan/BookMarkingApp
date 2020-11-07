@@ -14,8 +14,8 @@ const getBookmarks = gql`
   }
 `
 const addBookmark = gql`
-  mutation addBookmark($url : String! , $description : String , $title : String!}) {
-    addBookmark(url : $url , description : $description  , title : $title}) {
+  mutation addBookmark($url: String!, $description: String, $title: String!) {
+    addBookmark(url: $url, description: $description, title: $title) {
       url
       title
       description
@@ -36,6 +36,14 @@ export default function Home() {
   const { loading, error, data } = useQuery(getBookmarks)
   const [addBook] = useMutation(addBookmark)
   const [delBook] = useMutation(deleteBookmark)
+  const handleDelete = event => {
+    delBook({
+      variables: {
+        id: event.currentTarget.value,
+      },
+      refetchQueries: [{ query: getBookmarks }],
+    })
+  }
   if (error) {
     return <h4>error</h4>
   }
@@ -43,7 +51,23 @@ export default function Home() {
     <div>
       <div>
         <Formik
-          onSubmit={(value, action) => {}}
+          onSubmit={(value, actions) => {
+            addBook({
+              variables: {
+                url: value.url,
+                description: value.description,
+                title: value.title,
+              },
+              refetchQueries: [{ query: getBookmarks }],
+            })
+            actions.resetForm({
+              values: {
+                url: "",
+                description: "",
+                title: "",
+              },
+            })
+          }}
           initialValues={{
             url: "",
             description: "",
@@ -64,6 +88,22 @@ export default function Home() {
             </Form>
           )}
         </Formik>
+      </div>
+      <div>
+        {loading ? (
+          <div>loading</div>
+        ) : (
+          <div>
+            {data.bookmarks.map((v, i) => (
+              <div key={i}>
+                <h5>{v.title}</h5>
+                <p>{v.description}</p>
+                <a href={v.url} target='blank'>view</a>
+                <button onClick={handleDelete} value={v.id}>del</button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
