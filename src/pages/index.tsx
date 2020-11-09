@@ -3,6 +3,7 @@ import { useQuery, useMutation } from "@apollo/client"
 import gql from "graphql-tag"
 import { Formik, Form, Field } from "formik"
 import "./index.css"
+import CircularProgress from "@material-ui/core/CircularProgress"
 
 const getBookmarks = gql`
   {
@@ -104,32 +105,32 @@ export default function Home() {
       </div>
       <div className="data-display">
         {loading ? (
-          <div>loading</div>
+          <div className="loader">
+            <CircularProgress />
+          </div>
         ) : (
           <div className="data-div">
-            {data !== undefined
-              ? data.bookmarks.lenght >= 1
-                ? data.bookmarks.map((v, i) => (
-                    <div key={i} className="div">
-                      <div>
-                        <h3>{v.title}</h3>
-                      </div>
-                      <div>
-                        <p>{v.description}</p>
-                      </div>
-                      <div>
-                        <button>
-                          <a href={v.url} target="blank">
-                            view
-                          </a>
-                        </button>
-                        <button onClick={handleDelete} value={v.id}>
-                          del
-                        </button>
-                      </div>
+            {data !== undefined || (null && data.bookmarks.length !== 0)
+              ? data.bookmarks.map((v, i) => (
+                  <div key={i} className="div">
+                    <div>
+                      <h3>{v.title}</h3>
                     </div>
-                  ))
-                : ""
+                    <div>
+                      <p>{v.description}</p>
+                    </div>
+                    <div>
+                      <button>
+                        <a href={v.url} target="blank">
+                          view
+                        </a>
+                      </button>
+                      <button onClick={handleDelete} value={v.id}>
+                        del
+                      </button>
+                    </div>
+                  </div>
+                ))
               : ""}
           </div>
         )}
