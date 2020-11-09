@@ -80,8 +80,8 @@ export default function Home() {
         >
           {formik => (
             <Form onSubmit={formik.handleSubmit}>
-              <div className='input-main'>
-                <div className='input-div'>
+              <div className="input-main">
+                <div className="input-div">
                   <Field type="text" name="url" id="url" placeholder="link" />
                   <Field
                     type="text"
@@ -102,23 +102,35 @@ export default function Home() {
           )}
         </Formik>
       </div>
-      <div>
+      <div className="data-display">
         {loading ? (
           <div>loading</div>
         ) : (
-          <div>
-            {data.bookmarks.map((v, i) => (
-              <div key={i}>
-                <h5>{v.title}</h5>
-                <p>{v.description}</p>
-                <a href={v.url} target="blank">
-                  view
-                </a>
-                <button onClick={handleDelete} value={v.id}>
-                  del
-                </button>
-              </div>
-            ))}
+          <div className="data-div">
+            {data !== undefined
+              ? data.bookmarks.lenght >= 1
+                ? data.bookmarks.map((v, i) => (
+                    <div key={i} className="div">
+                      <div>
+                        <h3>{v.title}</h3>
+                      </div>
+                      <div>
+                        <p>{v.description}</p>
+                      </div>
+                      <div>
+                        <button>
+                          <a href={v.url} target="blank">
+                            view
+                          </a>
+                        </button>
+                        <button onClick={handleDelete} value={v.id}>
+                          del
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                : ""
+              : ""}
           </div>
         )}
       </div>
