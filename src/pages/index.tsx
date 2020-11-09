@@ -2,6 +2,7 @@ import React from "react"
 import { useQuery, useMutation } from "@apollo/client"
 import gql from "graphql-tag"
 import { Formik, Form, Field } from "formik"
+import "./index.css"
 
 const getBookmarks = gql`
   {
@@ -49,6 +50,9 @@ export default function Home() {
   }
   return (
     <div>
+      <div className="head">
+        <h2>Bookmark App</h2>
+      </div>
       <div>
         <Formik
           onSubmit={(value, actions) => {
@@ -76,15 +80,24 @@ export default function Home() {
         >
           {formik => (
             <Form onSubmit={formik.handleSubmit}>
-              <Field type="text" name="url" id="url" placeholder="link" />
-              <Field type="text" name="title" id="title" placeholder="title" />
-              <Field
-                type="description"
-                name="description"
-                id="description"
-                placeholder="description"
-              />
-              <button type="submit">submit</button>
+              <div className='input-main'>
+                <div className='input-div'>
+                  <Field type="text" name="url" id="url" placeholder="link" />
+                  <Field
+                    type="text"
+                    name="title"
+                    id="title"
+                    placeholder="title"
+                  />
+                  <Field
+                    type="description"
+                    name="description"
+                    id="description"
+                    placeholder="description"
+                  />
+                  <button type="submit">submit</button>
+                </div>
+              </div>
             </Form>
           )}
         </Formik>
@@ -98,8 +111,12 @@ export default function Home() {
               <div key={i}>
                 <h5>{v.title}</h5>
                 <p>{v.description}</p>
-                <a href={v.url} target='blank'>view</a>
-                <button onClick={handleDelete} value={v.id}>del</button>
+                <a href={v.url} target="blank">
+                  view
+                </a>
+                <button onClick={handleDelete} value={v.id}>
+                  del
+                </button>
               </div>
             ))}
           </div>
