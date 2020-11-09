@@ -12,7 +12,7 @@ const typeDefs = gql`
     bookmarks: [Bookmark!]
   }
   type Mutation {
-    addBookmark(url : String! , description : String , title : String!): Bookmark
+    addBookmark(url: String!, description: String, title: String!): Bookmark
     delBookmark(id: ID!): Bookmark
   }
   type Bookmark {
@@ -49,10 +49,12 @@ const resolvers = {
     },
   },
   Mutation: {
-    addBookmark: async (_, { url ,title , description }) => {
+    addBookmark: async (_, { url, title, description }) => {
       try {
         const result = await client.query(
-          q.Create(q.Collection("bookmarks"), { data: { url: url , title : title , description : description } })
+          q.Create(q.Collection("bookmarks"), {
+            data: { url: url, title: title, description: description },
+          })
         )
         console.log(result.ref.id)
         return result.data
